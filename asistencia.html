@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Control Asistencias</title>
+  <link rel="stylesheet" href="css/insert.css">
+</head>
+<body>
+  <nav class="navigation">
+    <a href="index.html">Inicio</a> 
+    <a href="trabajador.html">Registrar trabajador</a> 
+    <a href="todos-los-trabajdores.html">Ver trabajadores</a>
+    <a href="asistencia.html">Registrar asistencia</a>
+    <a href="todas-las-asistencias.html">Ver asistencias</a>
+    <a href="reportes.html">Generar reporte</a>
+  </nav>
+  <form class="form-insert" id="form-insert">
+    <h3>Nueva asistencia</h3>
+    <div>
+      <label for="userCode">Código</label>
+      <select name="type" id="type" class="type-select">
+        <option value="">Seleccione código</option>
+      </select>
+    </div>
+    <div>
+      <label for="userID">Cédula</label>
+      <input type="text" id="userID" name="userID">
+    </div>
+    <div>
+      <label for="username">Nombres completo</label>
+      <input type="text" id="username" name="username">
+    </div>
+    <div>
+      <label for="lastname">Fecha</label>
+      <input type="date" id="lastname" name="lastname">
+    </div>
+    <div>
+      <label for="lastname">Hora ingreso</label>
+      <input type="time" id="lastname" name="lastname">
+    </div>
+    <div>
+      <label for="lastname">Hora salida</label>
+      <input type="time" id="lastname" name="lastname">
+    </div>
+    
+    <div>
+      <input type="submit" value="Registrar">
+    </div>
+  </form>
+  <script src="js/register_date.js"></script>
+</body>
+</html>

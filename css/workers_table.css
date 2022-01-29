@@ -119,6 +119,45 @@ tbody tr td:last-child {
   align-items: center;
 }
 
+.modal-update {
+  position:fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100vh;
+  z-index: 100;
+  background: rgba(0, 0, 0, 0.651);
+  display: flex;
+  justify-content: center;
+  padding: 2rem 0;
+  box-sizing: border-box;
+  overflow: auto;
+}
+
+.modal-update form {
+  background: #fff;
+  height: fit-content;
+}
+
+.close {
+  width: 4rem;
+  height: 2rem;
+  position: absolute;
+  top: 0;
+  right: 0;
+  z-index: 10;
+  background: red;
+  color: #fff;
+  display:flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+}
+
+.hidden {
+  display:none;
+}
+
 @media screen and (max-width: 704px) {
   .table-container {
     width: 95%;

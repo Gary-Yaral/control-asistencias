@@ -6,6 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>SW | Trabajadores</title>
   <link rel="stylesheet" href="css/workers_table.css">
+  <link rel="stylesheet" href="css/insert.css">
 </head>
 <body>
   <nav class="navigation">
@@ -31,6 +32,39 @@
       <tbody id="t-body"></tbody>
     </table>
   </div>
+  <section class="modal-update hidden">
+    <div class="close">cerrar</div>
+    <form class="form-insert" id="form-insert">
+      <h3>Editar trabajador</h3>
+      <div>
+        <label for="userCode">Código</label>
+        <input type="text" id="userCode" name="userCode">
+      </div>
+      <div>
+        <label for="userID">Cédula</label>
+        <input type="text" id="userID" name="userID">
+      </div>
+      <div>
+        <label for="username">Nombres</label>
+        <input type="text" id="username" name="username">
+      </div>
+      <div>
+        <label for="lastname">Apellidos</label>
+        <input type="text" id="lastname" name="lastname">
+      </div>
+      <div>
+        <label for="type">Cargo</label>
+        <select name="type" id="type" class="type-select">
+          <option value="">Seleccione un cargo</option>
+          <option value="Empleado">Empleado</option>
+          <option value="Jefe">Jefe</option>
+        </select>
+      </div>
+      <div>
+        <input type="submit" value="Registrar">
+      </div>
+    </form>
+  </section>
   <script src="js/allWorkers.js"></script>
 </body>
 </html>

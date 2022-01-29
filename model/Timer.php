@@ -1,7 +1,7 @@
 <?php 
 
   require_once('Connection.php');
-  Class Worker extends Connection{
+  Class Timer extends Connection{
   
       private $newConnection;
   
@@ -11,28 +11,28 @@
     }
 
     public function insert(array $data){
-    $query= "INSERT INTO `workers` (`codigo`,`cedula`, `nombres`, `apellidos`,`cargo`) VALUES (?, ?, ?, ?, ?);";	
+    $query= "INSERT INTO `timers` (`codigo`,`cedula`, `nombre`,`fecha`, `hora_entrada`, `hora_salida`) VALUES (?, ?, ?, ?, ?, ?);";	
     $statement = $this->newConnection->prepare($query);
     $statement->execute($data);
     return $statement;
     }
 
     public function getAll(){
-      $query= "SELECT * FROM `workers`";	
+      $query= "SELECT * FROM `timers`";	
       $statement = $this->newConnection->query($query);
       return $statement;
       
     }
 
     public function delete(string $codigo){
-      $query= "DELETE FROM `workers` WHERE `codigo` = ?;";	
+      $query= "DELETE FROM `timers` WHERE `codigo` = ?;";	
       $statement = $this->newConnection->prepare($query);
       $statement->execute(array($codigo));
       return $statement;
 		}
 
     public function search(string $user){
-			$query= "SELECT * FROM `workers` WHERE `codigo` = ? ";	
+			$query= "SELECT * FROM `timers` WHERE `codigo` = ? ";	
 			$statement = $this->newConnection->prepare($query);
 			$statement->execute(array($user));
 			return $statement;			

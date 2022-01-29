@@ -1,7 +1,9 @@
 <?php 
     
-    require_once('../model/Worker.php');
+    require_once('../model/Timer.php');
 
+    echo json_encode($_POST);
+    return;
 
     $codigo = strval($_POST['userCode']);
     $cedula = strval($_POST['userID']);

@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SW | Asistencias</title>
+  <link rel="stylesheet" href="css/workers_table.css">
+  <link rel="stylesheet" href="css/insert.css">
+</head>
+<body>
+  <nav class="navigation">
+    <a href="index.html">Inicio</a> 
+    <a href="trabajador.html">Registrar trabajador</a> 
+    <a href="todos-los-trabajdores.html">Ver trabajadores</a>
+    <a href="asistencia.html">Registrar asistencia</a>
+    <a href="todas-las-asistencias.html">Ver asistencias</a>
+    <a href="reportes.html">Generar reporte</a>
+  </nav>
+  <div class="table-container">
+    <table>
+      <thead>
+        <tr></tr>
+          <th>Código</th>
+          <th>Cédula</th>
+          <th>Nombre</th>
+          <th>Fecha</th>
+          <th>Hora entrada</th>
+          <th>Hora salida</th>
+          <th>Opciones</th>
+        </tr>
+      </thead>
+      <tbody id="t-body"></tbody>
+    </table>
+  </div>
+  <section class="modal-update hidden">
+    <div class="close">cerrar</div>
+    <form class="form-insert" id="form-insert">
+      <h3>Editar trabajador</h3>
+      <div>
+        <label for="userCode">Código</label>
+        <input type="text" id="userCode" name="userCode">
+      </div>
+      <div>
+        <label for="userID">Cédula</label>
+        <input type="text" id="userID" name="userID">
+      </div>
+      <div>
+        <label for="username">Nombres</label>
+        <input type="text" id="username" name="username">
+      </div>
+      <div>
+        <label for="lastname">Apellidos</label>
+        <input type="text" id="lastname" name="lastname">
+      </div>
+      <div>
+        <label for="type">Cargo</label>
+        <select name="type" id="type" class="type-select">
+          <option value="">Seleccione un cargo</option>
+          <option value="Empleado">Empleado</option>
+          <option value="Jefe">Jefe</option>
+        </select>
+      </div>
+      <div>
+        <input type="submit" value="Registrar">
+      </div>
+    </form>
+  </section>
+  <script src="js/times-table.js"></script>
+</body>
+</html>

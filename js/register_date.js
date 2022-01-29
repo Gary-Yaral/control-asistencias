@@ -82,14 +82,22 @@ form.addEventListener('submit', (e) => {
   e.preventDefault();
   if (verifyEmpties().isValid) {
     let formData = new FormData(form);
-    formData.append('code', select.value);
+    formData.append('userCode', select.value);
     fetch('controller/save_timer.php', {
       method: 'POST',
       body: formData
     })
       .then(res => res.json())
       .then(res => {
-        console.log(res)
+        if(res === true){
+          alert('Asistencia agregada correctamente');
+          form.reset();
+          data[0].focus();
+          return;
+        }
+
+        alert(res.message);
+        data[0].focus();
       })
     return;
   }

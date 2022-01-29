@@ -11,7 +11,7 @@
     }
 
     public function insert(array $data){
-    $query= "INSERT INTO `timers` (`codigo`,`cedula`, `nombre`,`fecha`, `hora_entrada`, `hora_salida`) VALUES (?, ?, ?, ?, ?, ?);";	
+    $query= "INSERT INTO `timers` (`id_registro`,`codigo`,`cedula`, `nombre`,`fecha`, `hora_entrada`, `hora_salida`) VALUES (?, ?, ?, ?, ?, ?, ?);";	
     $statement = $this->newConnection->prepare($query);
     $statement->execute($data);
     return $statement;
@@ -25,21 +25,21 @@
     }
 
     public function delete(string $codigo){
-      $query= "DELETE FROM `timers` WHERE `codigo` = ?;";	
+      $query= "DELETE FROM `timers` WHERE `id_registro` = ?;";	
       $statement = $this->newConnection->prepare($query);
       $statement->execute(array($codigo));
       return $statement;
 		}
 
-    public function search(string $user){
-			$query= "SELECT * FROM `timers` WHERE `codigo` = ? ";	
+    public function searchRepetead(array $data){
+			$query= "SELECT * FROM `timers` WHERE `codigo` = ? AND `fecha`=?;";	
 			$statement = $this->newConnection->prepare($query);
-			$statement->execute(array($user));
+			$statement->execute($data);
 			return $statement;			
 		}
 
     public function update(array $data){
-			$query= "UPDATE `workers` SET `codigo` = ?,`cedula` = ?, `nombres` = ?, `apellidos` = ?,`cargo` = ? WHERE `codigo` = ?;";		
+			$query= "UPDATE `workers` SET `codigo` = ?,`cedula` = ?, `nombres` = ?, `apellidos` = ?,`cargo` = ? WHERE `id_registro` = ?;";		
 			$statement = $this->newConnection->prepare($query);
 			$statement->execute($data);
 			return $statement;

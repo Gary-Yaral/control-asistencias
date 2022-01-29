@@ -2,29 +2,28 @@
     
     require_once('../model/Timer.php');
 
-    echo json_encode($_POST);
-    return;
-
+    $idFecha = uniqid('date_',true);
     $codigo = strval($_POST['userCode']);
     $cedula = strval($_POST['userID']);
-    $nombres = strval($_POST['username']);
-    $apellidos = strval($_POST['lastname']);
-    $cargo = strval($_POST['type']);
+    $nombre = strval($_POST['username']);
+    $fecha = strval($_POST['date']);
+    $horaEntrada = strval($_POST['hora_ingreso']);
+    $horaSalida = strval($_POST['hora_salida']);
 
-    $array = array($codigo, $cedula, $nombres, $apellidos, $cargo);
+    $array = array($idFecha, $codigo, $cedula, $nombre,$fecha, $horaEntrada, $horaSalida);
 
-    $worker = new Worker();
+    $timer = new Timer();
+    $setFecha = array($codigo, $fecha);
+    $result = $timer->searchRepetead($setFecha)->fetch();
 
-    $result = $worker->search($codigo)->fetch();
-    if($result !== false) {
-      echo json_encode(['result'=>false, 'type'=>'repeated']);
+    if($result === false) {
+      if($timer ->insert($array)) {
+        echo json_encode(true);
+        return;
+      }
+      echo json_encode(['response'=> false, 'message'=> 'Error al ingresar asistencia']);
       return;
     }
-
-    if($worker ->insert($array)) {
-      echo json_encode(true);
-    } else {
-      echo json_encode(false);
-    }
+    echo json_encode(['response'=> false, 'message'=> 'Ya existe una asistencia de esa fecha para ese trabajador']);
 
 ?>

@@ -39,7 +39,7 @@
 		}
 
     public function update(array $data){
-			$query= "UPDATE `workers` SET `codigo` = ?,`cedula` = ?, `nombres` = ?, `apellidos` = ?,`cargo` = ? WHERE `id_registro` = ?;";		
+			$query= "UPDATE `timers` SET `codigo` = ?,`cedula` = ?, `nombre` = ?, `fecha` = ?,`hora_entrada` = ?, `hora_salida` = ? WHERE `id_registro` = ?;";		
 			$statement = $this->newConnection->prepare($query);
 			$statement->execute($data);
 			return $statement;

@@ -27,6 +27,7 @@
           <th>Fecha</th>
           <th>Hora entrada</th>
           <th>Hora salida</th>
+          <th>Horas extras</th>
           <th>Opciones</th>
         </tr>
       </thead>
@@ -35,32 +36,35 @@
   </div>
   <section class="modal-update hidden">
     <div class="close">cerrar</div>
-    <form class="form-insert" id="form-insert">
-      <h3>Editar trabajador</h3>
+    <form class="form-insert" id="form-inset">
+      <h3>Editar asistencia</h3>
       <div>
         <label for="userCode">Código</label>
-        <input type="text" id="userCode" name="userCode">
+        <select name="type" id="type" class="type-select">
+          <option value="">Seleccione código</option>
+        </select>
       </div>
       <div>
         <label for="userID">Cédula</label>
         <input type="text" id="userID" name="userID">
       </div>
       <div>
-        <label for="username">Nombres</label>
+        <label for="username">Nombres completo</label>
         <input type="text" id="username" name="username">
       </div>
       <div>
-        <label for="lastname">Apellidos</label>
-        <input type="text" id="lastname" name="lastname">
+        <label for="date">Fecha</label>
+        <input type="date" id="date" name="date">
       </div>
       <div>
-        <label for="type">Cargo</label>
-        <select name="type" id="type" class="type-select">
-          <option value="">Seleccione un cargo</option>
-          <option value="Empleado">Empleado</option>
-          <option value="Jefe">Jefe</option>
-        </select>
+        <label for="time_in">Hora ingreso</label>
+        <input type="time" id="time_in" name="hora_ingreso">
       </div>
+      <div>
+        <label for="time_out">Hora salida</label>
+        <input type="time" id="time_out" name="hora_salida">
+      </div>
+      
       <div>
         <input type="submit" value="Registrar">
       </div>

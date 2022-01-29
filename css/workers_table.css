@@ -37,6 +37,7 @@ table {
 thead {
   background: black;
   color: #fff;
+  width:100%;
 }
 
 thead tr {
@@ -51,6 +52,7 @@ tbody {
 
 tbody tr td{
   padding: 10px;
+  font-size: 12px;
 }
 
 tbody tr:hover,

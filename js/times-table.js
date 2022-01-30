@@ -16,11 +16,24 @@ fullname.readOnly = true;
 
 inputs.push(select);
 
-function getExtraHours(horaEntrada, horaSalida) {
+function getHours(horaEntrada, horaSalida) {
   let tiempoEntrada = horaEntrada.split(':').map(hour => parseInt(hour));
   let tiempoSalida = horaSalida.split(':').map(hour => parseInt(hour));    
   let horas = (tiempoSalida[0] + (tiempoSalida[1]/60)) - (tiempoEntrada[0] + (tiempoEntrada[1]/60));
-  return horas.toFixed(2);
+  if(tiempoSalida[0] >= 17 && tiempoSalida[1] >= 0) {
+    let horasNormales = (Math.trunc(100 * (17 - (tiempoEntrada[0] + (tiempoEntrada[1]/60))))) / 100;
+    
+    let extras = (Math.trunc((horas - horasNormales) * 100)) / 100
+    return {
+      normales:  horasNormales,
+      extras
+    };
+  }
+
+  return {
+    normales:  (Math.trunc(100 * horas)) / 100,
+    extras: 0
+  };
 }
 
 fetch('controller/getAllTimes.php')
@@ -34,6 +47,7 @@ fetch('controller/getAllTimes.php')
       let fecha =document.createElement('td');
       let horaEntrada =document.createElement('td');
       let horaSalida =document.createElement('td');
+      let horaNormales =document.createElement('td');
       let horasExtras =document.createElement('td');
   
       let buttons =document.createElement('td');
@@ -55,8 +69,8 @@ fetch('controller/getAllTimes.php')
       fecha.innerHTML = time[4];
       horaEntrada.innerHTML = time[5];
       horaSalida.innerHTML = time[6];
-
-      horasExtras.innerHTML = getExtraHours(time[5],time[6]);
+      horaNormales.innerHTML = getHours(time[5],time[6]).normales;
+      horasExtras.innerHTML = getHours(time[5],time[6]).extras;
      
       tr.appendChild(codigo);
       tr.appendChild(cedula);
@@ -64,6 +78,7 @@ fetch('controller/getAllTimes.php')
       tr.appendChild(fecha);
       tr.appendChild(horaEntrada);
       tr.appendChild(horaSalida);
+      tr.appendChild( horaNormales);
       tr.appendChild(horasExtras);
 
       tr.appendChild(buttons);
@@ -236,7 +251,8 @@ function saveTimer() {
             tds[3].innerHTML = formData.get('date');
             tds[4].innerHTML = formData.get('hora_ingreso');
             tds[5].innerHTML = formData.get('hora_salida');
-            tds[6].innerHTML = getExtraHours(formData.get('hora_ingreso'),formData.get('hora_salida'))
+            tds[6].innerHTML = getHours(formData.get('hora_ingreso'),formData.get('hora_salida')).normales;
+            tds[7].innerHTML = getHours(formData.get('hora_ingreso'),formData.get('hora_salida')).extras;
 
             hideModal();
             form.reset();

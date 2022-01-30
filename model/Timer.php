@@ -38,6 +38,13 @@
 			return $statement;			
 		}
 
+    public function searchDates(array $data){
+			$query= "SELECT * FROM `timers` WHERE fecha >= ? AND fecha <= ?;";
+			$statement = $this->newConnection->prepare($query);
+			$statement->execute($data);
+			return $statement;			
+		}
+
     public function update(array $data){
 			$query= "UPDATE `timers` SET `codigo` = ?,`cedula` = ?, `nombre` = ?, `fecha` = ?,`hora_entrada` = ?, `hora_salida` = ? WHERE `id_registro` = ?;";		
 			$statement = $this->newConnection->prepare($query);

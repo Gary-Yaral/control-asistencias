@@ -31,8 +31,6 @@ function verifyEmpties () {
 }
 
 
-
-
 form.addEventListener('submit', (e) => {
   e.preventDefault();
   if (verifyEmpties().isValid) {

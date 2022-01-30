@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SW | Asistencias</title>
+  <link rel="stylesheet" href="css/workers_table.css">
+  <link rel="stylesheet" href="css/insert.css">
+</head>
+<body>
+  <nav class="navigation">
+    <a href="index.html">Inicio</a> 
+    <a href="trabajador.html">Registrar trabajador</a> 
+    <a href="todos-los-trabajadores.html">Ver trabajadores</a>
+    <a href="asistencia.html">Registrar asistencia</a>
+    <a href="todas-las-asistencias.html">Ver asistencias</a>
+    <a href="busquedas.html">Buscar asistencias</a>
+  </nav>
+  <section>
+    <form class="form-search">
+      <div>
+        <label for="fecha_inicial">Fecha inicial</label>
+        <input type="date" name="fecha_inicial">
+      </div>
+      <div>
+        <label for="fecha_final">Fecha final</label>
+        <input type="date" name="fecha_final">
+      </div>
+      <div>
+        <input type="submit" value="Filtrar">
+      </div>
+    </form>
+  </section>
+  <div class="table-container">
+    <table>
+      <thead>
+        <tr></tr>
+          <th>Código</th>
+          <th>Cédula</th>
+          <th>Nombre</th>
+          <th>Fecha</th>
+          <th>Hora entrada</th>
+          <th>Hora salida</th>
+          <th>Horas normales</th>
+          <th>Horas extras</th>
+        </tr>
+      </thead>
+      <tbody id="t-body"></tbody>
+    </table>
+  </div>
+  </section>
+  <script src="js/search.js"></script>
+</body>
+</html>

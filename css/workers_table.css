@@ -20,8 +20,8 @@ body {
   max-width: 803px;
   position: relative;
   overflow:auto;
-  margin-top: 1rem;
   margin-bottom: 2rem;
+  margin-top:1rem;
 }
 
 table {
@@ -35,15 +35,15 @@ table {
 }
 
 thead {
-  background: black;
+  background:var(--black);
   color: #fff;
   width:100%;
 }
 
 thead tr {
-  background:rgb(0, 0, 0);
   padding: 10px;
-  height: 2rem;
+  min-height: 100%;
+  font-size: 14px;
 }
 
 tbody {
@@ -74,7 +74,7 @@ tbody tr td:last-child {
 }
 
 .btn-edit {
-  background: rgb(13, 184, 7);
+  background: rgb(7, 128, 184);
   color: #fff;
   border: none;
   width: 4rem;
@@ -83,22 +83,12 @@ tbody tr td:last-child {
 }
 
 .btn-delete {
-  background: rgb(236, 62, 9);
+  background: var(--orange);
   color: #fff;
   border: none;
   width: 4rem;
   height: 2rem;
   cursor:pointer;
-}
-
-.a-new-worker {
-  text-decoration: none;
-  background: rgb(13, 184, 7);
-  color: #fff;
-  position: absolute;
-  top: 10px;
-  left:10px;
-  padding: .5rem;
 }
 
 .navigation {
@@ -147,30 +137,33 @@ tbody tr td:last-child {
 
 .close {
   width: 4rem;
-  height: 2rem;
+  height: 3rem;
   position: absolute;
-  top: 0;
-  right: 0;
+  top: 10px;
+  right: 10px;
   z-index: 10;
-  background: red;
+  background: rgba(255, 0, 0, 0);
   color: #fff;
   display:flex;
   justify-content: center;
   align-items: center;
   cursor: pointer;
+  border: 1px solid #fff;
 }
 
 .form-search {
-  margin-top: 2rem;
   display: grid;
-  gap:1rem;
-  grid-template-columns: 1fr 1fr 1fr;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+  width: 95%;
+  height: fit-content;
+  margin-top: 1rem;
+  max-width: 700px;
 }
 
 .hidden {
   display:none;
 }
-
 
 .last-td {
   display:flex;
@@ -180,18 +173,59 @@ tbody tr td:last-child {
   align-items: center;
 }
 
+.btn-pdf{
+  margin-top: 1rem;
+  height:2rem;
+  width:100%;
+  display:flex;
+  padding: 0 10px;
+  border:2px solid var(--orange);
+  color: var(--orange);
+  justify-content: center;
+  align-items: center;
+  font-size: 12px;
+  cursor: pointer;
+  box-sizing: border-box;
+}
+
+caption {
+  margin: 1rem 0;
+  width:100%;
+  font-weight: bold;
+  font-size: 1.5rem;
+}
+
+caption div {
+  display: grid;
+  width: 100%;
+  grid-template-columns: 1fr 10fr;
+  align-items: center;
+  gap: 1px;
+}
+
+caption img {
+  width: 100px;
+  margin-left: 2rem;
+}
+
 @media screen and (max-width: 804px) {
   .table-container {
-    width: 95%;
-    
+    width: 95%;  
   }
 }
 
 @media screen and (max-width: 480px) {
-  .navigation {
+  .navigation,
+  .form-search {
     display: grid;
     grid-template-columns: 1fr;
     gap: 1rem;
     width: 95%;    
+  }
+}
+
+@media print {
+  nav {
+    display:none;
   }
 }

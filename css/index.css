@@ -39,6 +39,14 @@ body {
 
 }
 
+.logo-index{
+  width: 150px;
+}
+
+.title-index{
+  margin-bottom: 1rem;
+}
+
 @media screen and (max-width: 410px) {
   .navigation {
     width: 95%;

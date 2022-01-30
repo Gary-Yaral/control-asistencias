@@ -5,7 +5,9 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>SW | Asistencias</title>
+  <link rel="shortcut icon" href="img/SWTELECOM_logo.png" type="image/png">
   <link rel="stylesheet" href="css/workers_table.css">
+  <link rel="stylesheet" href="css/print.css" media="print">
   <link rel="stylesheet" href="css/insert.css">
 </head>
 <body>
@@ -17,25 +19,32 @@
     <a href="todas-las-asistencias.html">Ver asistencias</a>
     <a href="busquedas.html">Buscar asistencias</a>
   </nav>
-  <section>
-    <form class="form-search">
-      <div>
-        <label for="fecha_inicial">Fecha inicial</label>
-        <input type="date" name="fecha_inicial">
-      </div>
-      <div>
-        <label for="fecha_final">Fecha final</label>
-        <input type="date" name="fecha_final">
-      </div>
-      <div>
-        <input type="submit" value="Filtrar">
-      </div>
-    </form>
-  </section>
+  <form class="form-search">
+    <div>
+      <label for="fecha_inicial">Fecha inicial</label>
+      <input type="date" name="fecha_inicial">
+    </div>
+    <div>
+      <label for="fecha_final">Fecha final</label>
+      <input type="date" name="fecha_final">
+    </div>
+    <div>
+      <input type="submit" value="Filtrar">
+    </div>
+    <div>
+      <div class ="btn-pdf" onclick="print()">Generar PDF</div>
+    </div>
+  </form>
   <div class="table-container">
     <table>
+      <caption>
+        <div>
+          <img src="img/SWTELECOM_logo.png" alt="SW_logo">
+          <label>Reporte de asistencias</label>
+        </div> 
+      </caption>
       <thead>
-        <tr></tr>
+        <tr height = 50>
           <th>Código</th>
           <th>Cédula</th>
           <th>Nombre</th>

@@ -25,8 +25,15 @@ function getHours(horaEntrada, horaSalida) {
     
     let extras = (Math.trunc((horas - horasNormales) * 100)) / 100
     return {
-      normales:  horasNormales,
+      normales:  Math.trunc(100 * (horasNormales - 1)) /100 ,
       extras
+    };
+  }
+
+  if(horas > 4) {
+    return {
+      normales:  ((Math.trunc(100 * horas)) / 100)- 1,
+      extras: 0
     };
   }
 
@@ -55,7 +62,7 @@ fetch('controller/getAllTimes.php')
       let btnDelete = document.createElement('button');
 
       btnEdit.innerHTML = 'Editar';
-      btnDelete.innerHTML = 'Eliminar';
+      btnDelete.innerHTML = 'Borrar';
       btnEdit.setAttribute('row',time[0]);
       btnDelete.setAttribute('row',time[0]);
       btnEdit.classList.add('btn-edit')

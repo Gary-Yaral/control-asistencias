@@ -1,3 +1,9 @@
+:root {
+  --orange: #F23005;
+  --black: #0D0D0D;
+  --orange-light: #F2C4B3;
+}
+
 *{
   margin: 0;
   padding: 0;
@@ -61,7 +67,7 @@ form label{
 
 input[type="submit"] {
   margin-top: 1rem;
-  background: rgb(13, 184, 7);
+  background: var(--orange);
   color: #fff;
   border:none;
   cursor:pointer;

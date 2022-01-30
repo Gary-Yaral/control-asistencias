@@ -47,7 +47,7 @@ fetch('controller/getAllWorkers.php')
       let btnDelete = document.createElement('button');
 
       btnEdit.innerHTML = 'Editar';
-      btnDelete.innerHTML = 'Eliminar';
+      btnDelete.innerHTML = 'Borrar';
       btnEdit.setAttribute('row',worker[0]);
       btnDelete.setAttribute('row',worker[0]);
       btnEdit.classList.add('btn-edit')

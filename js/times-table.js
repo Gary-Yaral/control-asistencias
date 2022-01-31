@@ -110,8 +110,15 @@ function removeTimer(row) {
     .then(res => {
       if(res === true) {
         if(tbody.removeChild(row)){       
-          alert('La asistencia ha sido eliminada')
+          swal('La asistencia ha sido eliminada',{
+            icon:'success'
+          })
+          return;
         }
+        
+        swal('Ha ocurrido un error al eliminar la asistencia',{
+          icon:'warning'
+        })
       }
     })
 }
@@ -127,7 +134,16 @@ body.addEventListener('click', (e) => {
 
   if(btnClass.contains('btn-delete')) {
     let row = e.target.parentNode.parentNode;
-    removeTimer(row);
+    swal({
+      title: "¿Desea borrar esta asistencia?",
+      text: "Una vez que se haya borrado le notificaremos",
+      icon: "warning",
+      buttons: true,
+      dangerMode: false,
+    })
+    .then((wasSaved) => {
+      if(wasSaved) removeTimer(row);
+    })
     return;
   }
 
@@ -243,31 +259,41 @@ function saveTimer() {
     .then(res => res.json())
     .then(res => {
       if(res === true){
-        alert('Asistencia editada correctamente');
-        const trs = [...tbody.querySelectorAll('tr')];
-            const tr = trs.filter(tr => {
-              if (tr.getAttribute('row') === codigo) {
-                return tr;
-              }
-            })[0];
-          
-            let tds = tr.querySelectorAll('td');
-            tds[0].innerHTML = formData.get('type');
-            tds[1].innerHTML = formData.get('userID');
-            tds[2].innerHTML = formData.get('username');
-            tds[3].innerHTML = formData.get('date');
-            tds[4].innerHTML = formData.get('hora_ingreso');
-            tds[5].innerHTML = formData.get('hora_salida');
-            tds[6].innerHTML = getHours(formData.get('hora_ingreso'),formData.get('hora_salida')).normales;
-            tds[7].innerHTML = getHours(formData.get('hora_ingreso'),formData.get('hora_salida')).extras;
+        swal('Asistencia editada correctamente',{
+          icon: "success",
+        })
+        .then((wasSaved) => {
+          const trs = [...tbody.querySelectorAll('tr')];
+          const tr = trs.filter(tr => {
+            if (tr.getAttribute('row') === codigo) {
+              return tr;
+            }
+          })[0];
+            
+          let tds = tr.querySelectorAll('td');
+          tds[0].innerHTML = formData.get('type');
+          tds[1].innerHTML = formData.get('userID');
+          tds[2].innerHTML = formData.get('username');
+          tds[3].innerHTML = formData.get('date');
+          tds[4].innerHTML = formData.get('hora_ingreso');
+          tds[5].innerHTML = formData.get('hora_salida');
+          tds[6].innerHTML = getHours(formData.get('hora_ingreso'),formData.get('hora_salida')).normales;
+          tds[7].innerHTML = getHours(formData.get('hora_ingreso'),formData.get('hora_salida')).extras;
 
-            hideModal();
-            form.reset();
+          hideModal();
+          form.reset();
+          return;
+        })
+
         return;
       }
 
-      alert(res.message);
-      inputs[0].focus();
+      swal(res.message, {
+        icon: 'warning'
+      })
+        .then(ok => {
+          inputs[0].focus();
+        })
     })
 }
 
@@ -276,8 +302,12 @@ form.addEventListener('submit', (e) => {
   if (verifyEmpties().isValid) {
 
     if(inputs[3].value === inputs[4].value) {
-      alert('La hora de salida debe ser diferente a la hora de entrada.');
-      inputs[4].focus();
+      swal('La hora de salida debe ser diferente a la hora de entrada.', {
+        icon: 'warning'
+      })
+        .then(ok => {
+          inputs[4].focus();
+        })
       return;
     }
 
@@ -286,26 +316,59 @@ form.addEventListener('submit', (e) => {
 
     if(hora_entrada[0] === hora_salida[0]) {
       if( hora_salida[1] > hora_entrada[1] ) {
-        saveTimer();
+        swal({
+          title: "¿Desea editar esta asistencia?",
+          text: "Una vez que se haya editada le notificaremos",
+          icon: "warning",
+          buttons: true,
+          dangerMode: false,
+        })
+        .then((wasSaved) => {
+          if(wasSaved) saveTimer();
+        })
+    
         return;
       }
 
-      alert('La hora de salida debe ser mayor a la hora de entrada.');
-      inputs[4].focus();
+      swal('La hora de salida debe ser diferente a la hora de entrada.', {
+        icon: 'warning'
+      })
+        .then(ok => {
+          inputs[4].focus();
+        })
       return;
     }
 
     if(hora_entrada[0] > hora_salida[0]) {
-      alert('La hora de salida debe ser mayor a la hora de entrada.');
-      inputs[4].focus();    
+      swal('La hora de salida debe ser diferente a la hora de entrada.', {
+        icon: 'warning'
+      })
+        .then(ok => {
+          inputs[4].focus();
+        })
       return;
     }
 
-    saveTimer();
+    swal({
+      title: "¿Desea editar esta asistencia?",
+      text: "Una vez que se haya editada le notificaremos",
+      icon: "warning",
+      buttons: true,
+      dangerMode: false,
+    })
+    .then((wasSaved) => {
+      if(wasSaved) saveTimer();
+    })
     return;
 
   }
 
-  alert(verifyEmpties().empties[0].monthsage);
-  verifyEmpties().empties[0].input.focus();
+  swal(verifyEmpties().empties[0].message, {
+    icon: 'warning'
+  })
+    .then(ok => {
+      verifyEmpties().empties[0].input.focus()
+    })
+  return;
+
 })

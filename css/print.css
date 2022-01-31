@@ -5,6 +5,14 @@
     display:none !important;
   }
 
+  .title-table {
+    display:none !important;
+  }
+
+  caption{
+    display: table-caption !important;
+  }
+
   .table-container {
     width: 95% !important;
   }

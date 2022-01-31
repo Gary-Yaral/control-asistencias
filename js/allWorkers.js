@@ -17,18 +17,37 @@ function removeWorker(row) {
   const formData = new FormData();
   formData.append('codigo', codigo);
 
-  fetch('controller/delete_worker.php', {
-    method: "POST",
-    body: formData
+  swal({
+    title: "¿Desea borrar este trabajador?",
+    text: "Una vez que se haya eliminado le notificaremos",
+    icon: "info",
+    buttons: true,
+    dangerMode: false,
   })
-    .then(res => res.json())
-    .then(res => {
-      if(res === true) {
-        if(tbody.removeChild(row)){       
-          alert('Se eliminado el trabajador')
-        }
-      }
-    })
+  .then((wasSaved) => {
+    if (wasSaved) {
+      fetch('controller/delete_worker.php', {
+        method: "POST",
+        body: formData
+      })
+        .then(res => res.json())
+        .then(res => {
+          if(res === true) {
+            if(tbody.removeChild(row)){       
+              swal("Trabajador borrado correctamente", {
+                icon: "success",
+              });
+            }
+            return;
+          }
+
+          swal("Ha ocurrido un error al borrar el trabajador", {
+            icon: "warning",
+          });
+        })
+    } 
+  });
+
 }
 
 
@@ -105,75 +124,109 @@ fetch('controller/getAllWorkers.php')
 
   })
 
-  function verifyEmpties () {
-    const empties = [];
-    const messages = [
-      "No ha ingresado el código o tiene espacios al principio",
-      "No ha ingresado la cédula o tiene espacios al principio",
-      "No ha ingresado los nombres o tiene espacios al principio",
-      "No ha ingresado los apellidos o tiene espacios al principio",
-      "No ha seleccionado el tipo",
-    ]
-  
-    inputs.forEach((input, index) => {
-      if (input.value === "" || input.value[0] === " ") {
-        empties.push({index, input, message: messages[index]});
-      }
+function verifyEmpties () {
+  const empties = [];
+  const messages = [
+    "No ha ingresado el código o tiene espacios al principio",
+    "No ha ingresado la cédula o tiene espacios al principio",
+    "No ha ingresado los nombres o tiene espacios al principio",
+    "No ha ingresado los apellidos o tiene espacios al principio",
+    "No ha seleccionado el tipo",
+  ]
+
+  inputs.forEach((input, index) => {
+    if (input.value === "" || input.value[0] === " ") {
+      empties.push({index, input, message: messages[index]});
+    }
+  })
+
+  if(select.value ==="") {
+    empties.push({index: 4, input: select, message: messages[4]
     })
-  
-    if(select.value ==="") {
-      empties.push({index: 4, input: select, message: messages[4]
-      })
-    } 
-  
-    if(empties.length === 0) return { isValid: true, empties};
-    return { isValid: false, empties};
-  }
+  } 
 
-  form.addEventListener('submit', (e) => {
-    e.preventDefault();
-    if(verifyEmpties().isValid === true) {
-      let modalCode = modal.getAttribute('usercode');
-      const formData = new FormData(form);
-      formData.append('original_code', modalCode);
+  if(empties.length === 0) return { isValid: true, empties};
+  return { isValid: false, empties};
+}
 
-      fetch('controller/update_worker.php',{
-        method: 'POST',
-        body: formData
-      })
-        .then(res => res.json())
-        .then(res => {
-          if(res === true ) { 
-            const trs = [...tbody.querySelectorAll('tr')];
-            const tr = trs.filter(tr => {
-              if (tr.getAttribute('row') === modalCode)  {
-                return tr;
-              }
-            })[0];
-          
-            modal.removeAttribute('usercode');
-            modal.setAttribute('usercode',formData.get('userCode'));
-            let newCode = modal.getAttribute('usercode');
-            tr.removeAttribute('row');
-            tr.setAttribute('row',newCode);
-            let tds = tr.querySelectorAll('td');
-            tds[0].innerHTML = formData.get('userCode');
-            tds[1].innerHTML = formData.get('userID');
-            tds[2].innerHTML = formData.get('username');
-            tds[3].innerHTML = formData.get('lastname');
-            tds[4].innerHTML = formData.get('type');
-            alert('Trabajador modificado correctamente.')
-            modal.classList.add('hidden');
-            form.reset();
-            return;
+function updateWorker() {
+  let modalCode = modal.getAttribute('usercode');
+  const formData = new FormData(form);
+  formData.append('original_code', modalCode);
+
+  fetch('controller/update_worker.php',{
+    method: 'POST',
+    body: formData
+  })
+    .then(res => res.json())
+    .then(res => {
+      if(res === true ) { 
+        const trs = [...tbody.querySelectorAll('tr')];
+        const tr = trs.filter(tr => {
+          if (tr.getAttribute('row') === modalCode)  {
+            return tr;
           }
-          
-          alert(res.message);
+        })[0];
+      
+        modal.removeAttribute('usercode');
+        modal.setAttribute('usercode',formData.get('userCode'));
+        let newCode = modal.getAttribute('usercode');
+        tr.removeAttribute('row');
+        tr.setAttribute('row',newCode);
+        let tds = tr.querySelectorAll('td');
+        tds[0].innerHTML = formData.get('userCode');
+        tds[1].innerHTML = formData.get('userID');
+        tds[2].innerHTML = formData.get('username');
+        tds[3].innerHTML = formData.get('lastname');
+        tds[4].innerHTML = formData.get('type');
+        swal('Trabajador editado correctamente.', {
+          icon:'success'
+        })
+
+        .then(ok => {
+          modal.classList.add('hidden');
+          form.reset();
+        })
+
+        return;
+      }
+      
+      swal(res.message, {
+        icon: 'warning'
+      })
+        .then(ok => {
           inputs[0].focus(); 
         })
-      return;
-    }
+    })
+  return;
+}
 
-    alert(verifyEmpties().empties[0].message);
-    verifyEmpties().empties[0].input.focus();
+form.addEventListener('submit', (e) => {
+  e.preventDefault();
+  if(verifyEmpties().isValid === true) {
+    swal({
+      title: "¿Desea editar este trabajador?",
+      text: "Una vez que se haya editado le notificaremos",
+      icon: "info",
+      buttons: true,
+      dangerMode: false,
+    })
+    .then((ok) => {
+      if(ok){ 
+        updateWorker()
+      }
+    })
+    return;
+  }
+
+  swal(verifyEmpties().empties[0].message, {
+    icon: 'warning'
   })
+  .then(ok => {
+    if(ok) {
+      verifyEmpties().empties[0].input.focus();
+    } else {
+      verifyEmpties().empties[0].input.focus();
+    }
+  })
+})

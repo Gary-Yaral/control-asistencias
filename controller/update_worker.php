@@ -29,7 +29,7 @@
         echo json_encode(['response'=>false , 'message'=>'Ha ocurrido un error al ingresar datos.']);
         return;
       }
-      echo json_encode(['response'=>false , 'message'=>'El codigo '.$codigo.' ya existe.']);
+      echo json_encode(['response'=>false , 'message'=>'Ya existe un usuario con el código '.$codigo.', por favor escriba otro código']);
       return;
     }
 

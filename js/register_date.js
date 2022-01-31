@@ -90,6 +90,54 @@ function verifyEmpties () {
   return { isValid: false, empties};
 }
 
+function processData() {
+  let formData = new FormData(form);
+  formData.append('userCode', select.value);
+  fetch('controller/save_timer.php', {
+    method: 'POST',
+    body: formData
+  })
+    .then(res => res.json())
+    .then(res => {
+      if(res === true){
+        swal("Asistencia registrada correctamente", {
+          icon: "success",
+        })
+        .then(ok => {  
+          form.reset();
+          resetDate(inputs[2]);
+          data[0].focus();                 
+        })
+        return;
+      }
+
+      swal(res.message, {
+        icon: 'warning'
+      })
+        .then(ok => {
+          if(ok) {
+            data[0].focus() 
+          } else {
+            data[0].focus();
+          }
+        }) 
+        return; 
+    })
+}
+
+function saveDate() {
+  swal({
+    title: "¿Desea registrar esta asistencia?",
+    text: "Una vez que se haya registrado le notificaremos",
+    icon: "info",
+    buttons: true,
+    dangerMode: false,
+  })
+  .then((wasSaved) => {
+    if(wasSaved) processData();
+  })
+}
+
 form.addEventListener('submit', (e) => {
   e.preventDefault();
   if (verifyEmpties().isValid) {
@@ -105,27 +153,7 @@ form.addEventListener('submit', (e) => {
 
     if(hora_entrada[0] === hora_salida[0]) {
       if( hora_salida[1] > hora_entrada[1] ) {
-
-        let formData = new FormData(form);
-        formData.append('userCode', select.value);
-        fetch('controller/save_timer.php', {
-          method: 'POST',
-          body: formData
-        })
-          .then(res => res.json())
-          .then(res => {
-            if(res === true){
-              alert('Asistencia agregada correctamente');
-              form.reset();
-              resetDate(inputs[2]);
-              data[0].focus();
-              return;
-            }
-
-            alert(res.message);
-            data[0].focus();
-          })
-       
+        saveDate();
         return;
       }
 
@@ -140,33 +168,18 @@ form.addEventListener('submit', (e) => {
       return;
     }
 
-    let formData = new FormData(form);
-        formData.append('userCode', select.value);
-        fetch('controller/save_timer.php', {
-          method: 'POST',
-          body: formData
-        })
-          .then(res => res.json())
-          .then(res => {
-            if(res === true){
-              alert('Asistencia agregada correctamente');
-              form.reset();
-              resetDate(inputs[2]);
-              data[0].focus();
-              return;
-            }
-
-            alert(res.message);
-            data[0].focus();
-          })
-       
-        return;
-
+    saveDate();      
+    return;
 
   }
 
-  alert(verifyEmpties().empties[0].monthsage);
-    verifyEmpties().empties[0].input.focus();
+  swal(verifyEmpties().empties[0].monthsage ,{
+    icon: 'warning'
+  })
+    .then(ok => {
+      if(ok) return verifyEmpties().empties[0].input.focus();
+      verifyEmpties().empties[0].input.focus()
+    })
 })
 
 

@@ -30,13 +30,8 @@ function verifyEmpties () {
   return { isValid: false, empties};
 }
 
-
-form.addEventListener('submit', (e) => {
-  e.preventDefault();
-  if (verifyEmpties().isValid) {
-
+function saveData(form) {
   let  data = new FormData(form); 
-
   fetch('controller/save_worker.php', {
     method: 'POST',
     body: data
@@ -44,21 +39,67 @@ form.addEventListener('submit', (e) => {
     .then(res => res.json())
     .then(res => { 
       if(res === true) {
-        alert('Trabajador ha sido agregado');
-        firstInput.focus();
-        form.reset();
-        return;
+        swal("Trabajador registrado correctamente", {
+          icon: "success",
+        })
+        .then(ok => {
+          if(ok) {
+            form.reset();
+            firstInput.focus();
+            return;
+          }else {
+              form.reset();
+              firstInput.focus();
+              return;
+          }            
+       })
       }
 
       if(res.type === 'repeated' ) {
-        alert('El código ingresado ya existe.');
-        firstInput.focus();
+        swal('El código ingresado ya existe', {
+          icon: "warning", 
+          buttons:true
+        })
+        .then(ok => {
+          if(ok) {
+            firstInput.focus();
+          } else {
+            firstInput.focus();
+          }
+          return;
+        })
       }
     });
+}
+
+
+form.addEventListener('submit', (e) => {
+  e.preventDefault();
+  if (verifyEmpties().isValid) {
+    swal({
+      title: "¿Desea registrar este trabajador?",
+      text: "Una vez que se haya registrado le notificaremos",
+      icon: "info",
+      buttons: true,
+      dangerMode: false,
+    })
+    .then((wasSaved) => {
+      if (wasSaved) {
+        saveData(form);
+      } 
+    });
+  
     return;
   }
 
-  alert(verifyEmpties().empties[0].message);
-  verifyEmpties().empties[0].input.focus();
+  swal(verifyEmpties().empties[0].message, {
+    icon: "warning", 
+    buttons:true
+  })
+  .then(ok => {
+    if(ok) verifyEmpties().empties[0].input.focus();
+  })
+  
+  
 
 })

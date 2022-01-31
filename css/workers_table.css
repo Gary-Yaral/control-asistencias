@@ -210,6 +210,7 @@ caption img {
 }
 
 .title-table {
+  max-width: 803px;
   width:95%;
   margin-top: 1rem;
   display: grid;

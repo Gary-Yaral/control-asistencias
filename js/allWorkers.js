@@ -18,9 +18,9 @@ function removeWorker(row) {
   formData.append('codigo', codigo);
 
   swal({
-    title: "¿Desea borrar este trabajador?",
-    text: "Una vez que se haya eliminado le notificaremos",
-    icon: "info",
+    title: "¿Está seguro de borrar este trabajador?",
+    text: "Una vez que se haya borrado le notificaremos",
+    icon: "warning",
     buttons: true,
     dangerMode: false,
   })
@@ -32,6 +32,7 @@ function removeWorker(row) {
       })
         .then(res => res.json())
         .then(res => {
+    
           if(res === true) {
             if(tbody.removeChild(row)){       
               swal("Trabajador borrado correctamente", {
@@ -41,7 +42,7 @@ function removeWorker(row) {
             return;
           }
 
-          swal("Ha ocurrido un error al borrar el trabajador", {
+          swal(res.message, {
             icon: "warning",
           });
         })

@@ -1,3 +1,5 @@
+import { getHours } from './gethours.js'
+
 const tbody = document.querySelector('#t-body');
 const body = document.querySelector('body');
 const modal = document.querySelector('.modal-update');
@@ -18,96 +20,63 @@ fullname.readOnly = true;
 inputs.push(select);
 inputs.push(selectAlmuerzo);
 
-function getHours(horaEntrada, horaSalida, almuerzo) {
-  let tiempoEntrada = horaEntrada.split(':').map(n => parseInt(n));
-  let tiempoSalida = horaSalida.split(':').map(n => parseInt(n));
-  let horas = (tiempoSalida[0] + (tiempoSalida[1]/60)) - (tiempoEntrada[0] + (tiempoEntrada[1]/60));
-  if(almuerzo === '1') {
-    let totalHoras =  horas - 1;
-    if( totalHoras > 8 ) {
-      let extras = (Math.trunc((totalHoras - 8) * 100))/100;
-      return {
-        normales: 8,
-        extras
-      }
-    }
-    return {
-      normales: (Math.trunc(horas * 100))/100,
-      extras: 0
-    }
-  }
-
-  if(almuerzo === '0') {
-    let totalHoras =  horas;
-    if( totalHoras > 8 ) {
-      let extras = (Math.trunc((totalHoras - 8) * 100))/100;
-      return {
-        normales: 8,
-        extras
-      }
-    }
-    
-    return {
-      normales: (Math.trunc(horas * 100))/100,
-      extras: 0
-    }
-  }
-  
-}
 
 fetch('controller/getAllTimes.php')
   .then(res => res.json())
   .then(res => {
-    res.forEach(time => {
-      let tr = document.createElement('tr');
-      let codigo =document.createElement('td');
-      let cedula =document.createElement('td');
-      let nombre =document.createElement('td');
-      let fecha =document.createElement('td');
-      let horaEntrada =document.createElement('td');
-      let horaSalida =document.createElement('td');
-      let almuerzo =document.createElement('td');
-      let horaNormales =document.createElement('td');
-      let horasExtras =document.createElement('td');
-  
-      let buttons =document.createElement('td');
-      let btnEdit = document.createElement('button');
-      let btnDelete = document.createElement('button');
+    if(res.length > 0) {
 
-      btnEdit.innerHTML = 'Editar';
-      btnDelete.innerHTML = 'Borrar';
-      btnEdit.setAttribute('row',time[0]);
-      btnDelete.setAttribute('row',time[0]);
-      btnEdit.classList.add('btn-edit')
-      btnDelete.classList.add('btn-delete')
-      buttons.appendChild(btnEdit);
-      buttons.appendChild(btnDelete);
+      res.forEach(time => {
+        let tr = document.createElement('tr');
+        let codigo =document.createElement('td');
+        let cedula =document.createElement('td');
+        let nombre =document.createElement('td');
+        let fecha =document.createElement('td');
+        let horaEntrada =document.createElement('td');
+        let horaSalida =document.createElement('td');
+        let almuerzo =document.createElement('td');
+        let horaNormales =document.createElement('td');
+        let horasExtras =document.createElement('td');
+    
+        let buttons =document.createElement('td');
+        let btnEdit = document.createElement('button');
+        let btnDelete = document.createElement('button');
 
-      codigo.innerHTML = time[1];
-      cedula.innerHTML = time[2];
-      nombre.innerHTML = time[3];
-      fecha.innerHTML = time[4];
-      horaEntrada.innerHTML = time[5];
-      horaSalida.innerHTML = time[6];
-      horaNormales.innerHTML = getHours(time[5],time[6],time[7]).normales;
-      horasExtras.innerHTML = getHours(time[5],time[6],time[7]).extras;
-      almuerzo.innerHTML = time[7] === '1' ? 'SI' : 'NO';
+        btnEdit.innerHTML = 'Editar';
+        btnDelete.innerHTML = 'Borrar';
+        btnEdit.setAttribute('row',time[5]);
+        btnDelete.setAttribute('row',time[5]);
+        btnEdit.classList.add('btn-edit')
+        btnDelete.classList.add('btn-delete')
+        buttons.appendChild(btnEdit);
+        buttons.appendChild(btnDelete);
 
-      tr.appendChild(codigo);
-      tr.appendChild(cedula);
-      tr.appendChild(nombre);
-      tr.appendChild(fecha);
-      tr.appendChild(horaEntrada);
-      tr.appendChild(horaSalida);
-      tr.appendChild(almuerzo);
-      tr.appendChild( horaNormales);
-      tr.appendChild(horasExtras);
-      tr.appendChild(buttons);
+        codigo.innerHTML = time[0];
+        cedula.innerHTML = time[1];
+        nombre.innerHTML = time[2]+ " " + time[3];
+        fecha.innerHTML = time[7];
+        horaEntrada.innerHTML = time[8];
+        horaSalida.innerHTML = time[9];
+        horaNormales.innerHTML = getHours(time[8],time[9],time[10]).normales;
+        horasExtras.innerHTML = getHours(time[8],time[9],time[10]).extras;
+        almuerzo.innerHTML = time[10] === '1' ? 'SI' : 'NO';
 
-      tr.setAttribute('row',time[0]);
-      tbody.appendChild(tr);
+        tr.appendChild(codigo);
+        tr.appendChild(cedula);
+        tr.appendChild(nombre);
+        tr.appendChild(fecha);
+        tr.appendChild(horaEntrada);
+        tr.appendChild(horaSalida);
+        tr.appendChild(almuerzo);
+        tr.appendChild( horaNormales);
+        tr.appendChild(horasExtras);
+        tr.appendChild(buttons);
 
-    })
+        tr.setAttribute('row',time[5]);
+        tbody.appendChild(tr);
+
+      })
+    }
   })
 
 
@@ -149,7 +118,7 @@ body.addEventListener('click', (e) => {
   if(btnClass.contains('btn-delete')) {
     let row = e.target.parentNode.parentNode;
     swal({
-      title: "¿Desea borrar esta asistencia?",
+      title: "¿Está seguro de borrar esta asistencia?",
       text: "Una vez que se haya borrado le notificaremos",
       icon: "warning",
       buttons: true,

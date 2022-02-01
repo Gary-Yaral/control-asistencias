@@ -5,14 +5,12 @@
     $id_registro = strval($_POST['timerCode']);
     $actual_code = strval($_POST['actualCode']);
     $codigo = strval($_POST['type']);
-    $cedula = strval($_POST['userID']);
-    $nombres = strval($_POST['username']);
     $fecha = strval($_POST['date']);
     $hora_ingreso = strval($_POST['hora_ingreso']);
     $hora_salida = strval($_POST['hora_salida']);
     $almuerzo = intval($_POST['almuerzo']);
 
-    $array = array($codigo, $cedula, $nombres, $fecha, $hora_ingreso, $hora_salida, $almuerzo, $id_registro);
+    $array = array($codigo, $fecha, $hora_ingreso, $hora_salida, $almuerzo, $id_registro);
     $timer = new Timer();
 
     if($actual_code === $codigo) {

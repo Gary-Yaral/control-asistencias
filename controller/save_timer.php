@@ -4,15 +4,12 @@
 
     $idFecha = uniqid('date_',true);
     $codigo = strval($_POST['userCode']);
-    $cedula = strval($_POST['userID']);
-    $nombre = strval($_POST['username']);
     $fecha = strval($_POST['date']);
     $horaEntrada = strval($_POST['hora_ingreso']);
     $horaSalida = strval($_POST['hora_salida']);
     $almuerzo = intval($_POST['almuerzo']);
 
-    $array = array($idFecha, $codigo, $cedula, $nombre,$fecha, $horaEntrada, $horaSalida, 
-    $almuerzo);
+    $array = array($idFecha, $codigo,$fecha, $horaEntrada, $horaSalida, $almuerzo);
 
     $timer = new Timer();
     $setFecha = array($codigo, $fecha);

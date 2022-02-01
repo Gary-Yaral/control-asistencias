@@ -9,8 +9,10 @@
     $fecha = strval($_POST['date']);
     $horaEntrada = strval($_POST['hora_ingreso']);
     $horaSalida = strval($_POST['hora_salida']);
+    $almuerzo = intval($_POST['almuerzo']);
 
-    $array = array($idFecha, $codigo, $cedula, $nombre,$fecha, $horaEntrada, $horaSalida);
+    $array = array($idFecha, $codigo, $cedula, $nombre,$fecha, $horaEntrada, $horaSalida, 
+    $almuerzo);
 
     $timer = new Timer();
     $setFecha = array($codigo, $fecha);

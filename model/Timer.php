@@ -11,7 +11,7 @@
     }
 
     public function insert(array $data){
-    $query= "INSERT INTO `timers` (`id_registro`,`codigo`,`cedula`, `nombre`,`fecha`, `hora_entrada`, `hora_salida`) VALUES (?, ?, ?, ?, ?, ?, ?);";	
+    $query= "INSERT INTO `timers` (`id_registro`,`codigo`,`cedula`, `nombre`,`fecha`, `hora_entrada`, `hora_salida`, `almuerzo`) VALUES (?, ?, ?, ?, ?, ?, ?, ?);";	
     $statement = $this->newConnection->prepare($query);
     $statement->execute($data);
     return $statement;
@@ -46,7 +46,7 @@
 		}
 
     public function update(array $data){
-			$query= "UPDATE `timers` SET `codigo` = ?,`cedula` = ?, `nombre` = ?, `fecha` = ?,`hora_entrada` = ?, `hora_salida` = ? WHERE `id_registro` = ?;";		
+			$query= "UPDATE `timers` SET `codigo` = ?,`cedula` = ?, `nombre` = ?, `fecha` = ?,`hora_entrada` = ?, `hora_salida` = ?, `almuerzo` = ? WHERE `id_registro` = ?;";		
 			$statement = $this->newConnection->prepare($query);
 			$statement->execute($data);
 			return $statement;

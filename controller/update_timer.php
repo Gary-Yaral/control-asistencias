@@ -10,8 +10,9 @@
     $fecha = strval($_POST['date']);
     $hora_ingreso = strval($_POST['hora_ingreso']);
     $hora_salida = strval($_POST['hora_salida']);
+    $almuerzo = intval($_POST['almuerzo']);
 
-    $array = array($codigo, $cedula, $nombres, $fecha, $hora_ingreso, $hora_salida, $id_registro);
+    $array = array($codigo, $cedula, $nombres, $fecha, $hora_ingreso, $hora_salida, $almuerzo, $id_registro);
     $timer = new Timer();
 
     if($actual_code === $codigo) {

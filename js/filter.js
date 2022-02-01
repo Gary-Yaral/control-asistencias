@@ -41,46 +41,60 @@ function getHours(horaEntrada, horaSalida, almuerzo) {
 
 function renderAll () {
 tbody.innerHTML = "";
+
 fetch('controller/getAllTimes.php')
   .then(res => res.json())
   .then(res => {
-    res.forEach(time => {
-      let tr = document.createElement('tr');
-      let codigo =document.createElement('td');
-      let cedula =document.createElement('td');
-      let nombre =document.createElement('td');
-      let fecha =document.createElement('td');
-      let horaEntrada =document.createElement('td');
-      let horaSalida =document.createElement('td');
-      let almuerzo =document.createElement('td');
-      let horaNormales =document.createElement('td');
-      let horasExtras =document.createElement('td');
+    if(res.length > 0) {
+      let data = {};
+      res.forEach(time => {
 
-      codigo.innerHTML = time[1];
-      cedula.innerHTML = time[2];
-      nombre.innerHTML = time[3];
-      fecha.innerHTML = time[4];
-      horaEntrada.innerHTML = time[5];
-      horaSalida.innerHTML = time[6];
-      horaNormales.innerHTML = getHours(time[5],time[6],time[7]).normales;
-      horasExtras.innerHTML = getHours(time[5],time[6],time[7]).extras;
-      almuerzo.innerHTML = time[7] === '1' ? 'SI' : 'NO';
+        data[time[1]] ??= {
+          codigo: time[1],
+          cedula: time[2],
+          nombre: time[3],
+          normales: 0,
+          extras:0
+        }
 
-      tr.appendChild(codigo);
-      tr.appendChild(cedula);
-      tr.appendChild(nombre);
-      tr.appendChild(fecha);
-      tr.appendChild(horaEntrada);
-      tr.appendChild(horaSalida);
-      tr.appendChild(almuerzo);
-      tr.appendChild(horaNormales);
-      tr.appendChild(horasExtras);
+        let normales = getHours(time[5],time[6],time[7]).normales;
+        let extras = getHours(time[5],time[6],time[7]).extras;
 
-      tr.setAttribute('row',time[0]);
-      tbody.appendChild(tr);
+        data[time[1]].normales += normales;
+        data[time[1]].extras += extras;
 
-    })
+      })
+    
+      data = Object.values(data).sort((a,b) => a.codigo-b.codigo)
+      data.forEach(time => {
+        let tr = document.createElement('tr');
+        let codigo =document.createElement('td');
+        let cedula =document.createElement('td');
+        let nombre =document.createElement('td');
+        let fechaInitial =document.createElement('td');
+        let fechaFinal =document.createElement('td');
+        let horasTotales =document.createElement('td');
+        let horasExtrasTotales =document.createElement('td');
+
+        codigo.innerHTML = time.codigo;
+        cedula.innerHTML = time.cedula;
+        nombre.innerHTML = time.nombre;
+        horasTotales.innerHTML = time.normales;
+        horasExtrasTotales.innerHTML = time.extras;
+
+        tr.appendChild(codigo);
+        tr.appendChild(cedula);
+        tr.appendChild(nombre);
+        tr.appendChild(fechaInitial);
+        tr.appendChild(fechaFinal);
+        tr.appendChild(horasTotales);
+        tr.appendChild(horasExtrasTotales);
+
+        tbody.appendChild(tr);
+      })
+    }
   })
+ 
 }
 
 function renderEmpties() {
@@ -118,45 +132,53 @@ fetch('controller/search_times.php',{
 })
 .then(res => res.json())
 .then(res => {
-  if (res.length > 0) {
-    res.forEach(time => { 
+  if(res.length > 0) {
+    let data = {};
+    res.forEach(time => {
+
+      data[time[1]] ??= {
+        codigo: time[1],
+        cedula: time[2],
+        nombre: time[3],
+        normales: 0,
+        extras:0
+      }
+
+      let normales = getHours(time[5],time[6],time[7]).normales;
+      let extras = getHours(time[5],time[6],time[7]).extras;
+
+      data[time[1]].normales += normales;
+      data[time[1]].extras += extras;
+
+    })
+  
+    data = Object.values(data).sort((a,b) => a.codigo-b.codigo)
+    data.forEach(time => {
       let tr = document.createElement('tr');
       let codigo =document.createElement('td');
       let cedula =document.createElement('td');
       let nombre =document.createElement('td');
-      let fecha =document.createElement('td');
-      let horaEntrada =document.createElement('td');
-      let horaSalida =document.createElement('td');
-      let almuerzo =document.createElement('td');
-      let horaNormales =document.createElement('td');
-      let horasExtras =document.createElement('td');
+      let fechaInitial =document.createElement('td');
+      let fechaFinal =document.createElement('td');
+      let horasTotales =document.createElement('td');
+      let horasExtrasTotales =document.createElement('td');
 
-      codigo.innerHTML = time[1];
-      cedula.innerHTML = time[2];
-      nombre.innerHTML = time[3];
-      fecha.innerHTML = time[4];
-      horaEntrada.innerHTML = time[5];
-      horaSalida.innerHTML = time[6];
-      
-      horaNormales.innerHTML = getHours(time[5],time[6],time[7]).normales;
-      horasExtras.innerHTML = getHours(time[5],time[6],time[7]).extras;
-      almuerzo.innerHTML = time[7] === '1' ? 'SI' : 'NO';
-      horasExtras.classList.add('last-td');
+      codigo.innerHTML = time.codigo;
+      cedula.innerHTML = time.cedula;
+      nombre.innerHTML = time.nombre;
+      horasTotales.innerHTML = time.normales;
+      horasExtrasTotales.innerHTML = time.extras;
 
       tr.appendChild(codigo);
       tr.appendChild(cedula);
       tr.appendChild(nombre);
-      tr.appendChild(fecha);
-      tr.appendChild(horaEntrada);
-      tr.appendChild(horaSalida);
-      tr.appendChild(almuerzo);
-      tr.appendChild(horaNormales);
-      tr.appendChild(horasExtras);
+      tr.appendChild(fechaInitial);
+      tr.appendChild(fechaFinal);
+      tr.appendChild(horasTotales);
+      tr.appendChild(horasExtrasTotales);
 
-      tr.setAttribute('row',time[0]);
       tbody.appendChild(tr);
-    }) 
-    return;
+    })
   }
  swal('No hay asistencias registradas en esas fechas', {
    icon: 'warning'

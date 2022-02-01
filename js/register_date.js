@@ -1,4 +1,5 @@
-const select = document.querySelector('.type-select');
+const select = document.querySelector('#type-select');
+const selectAlmuerzo = document.querySelector('#almuerzo');
 const form = document.querySelector('.form-insert');
 const cedula = form.querySelector('#userID');
 const fullname = form.querySelector('#username');
@@ -12,6 +13,7 @@ const inputs = [...form.querySelectorAll('input')].filter(input => {
 });
 
 data.push(...inputs);
+data.push(selectAlmuerzo);
 
 function resetDate(input){
   let actualDate = new Date();
@@ -78,6 +80,7 @@ function verifyEmpties () {
     "No ha ingresado fecha",
     "No ha ingresado la hora de entrada",
     "No ha ingresado la hora de salida",
+    "Debes seleccionar si tuvo o no almuerzo"
   ]
 
   data.forEach((input, index) => {
@@ -91,8 +94,10 @@ function verifyEmpties () {
 }
 
 function processData() {
+  let almuerzo = parseInt(selectAlmuerzo.value);
   let formData = new FormData(form);
   formData.append('userCode', select.value);
+  formData.append('almuerzo', almuerzo);
   fetch('controller/save_timer.php', {
     method: 'POST',
     body: formData
@@ -143,9 +148,14 @@ form.addEventListener('submit', (e) => {
   if (verifyEmpties().isValid) {
 
     if(data[4].value === data[5].value) {
-      alert('La hora de salida debe ser diferente a la hora de entrada.');
-      data[5].focus();
-      return;
+     swal('La hora de salida debe ser mayor a la hora de entrada.', {
+       icon:'warning'
+     })
+     .then(ok => {
+        data[5].focus();
+        return;
+     })
+     return;
     }
 
     let hora_entrada = data[4].value.split(':');
@@ -157,14 +167,24 @@ form.addEventListener('submit', (e) => {
         return;
       }
 
-      alert('La hora de salida debe ser mayor a la hora de entrada.');
-      data[5].focus();
+      swal('La hora de salida debe ser mayor a la hora de entrada.', {
+        icon:'warning'
+      })
+      .then(ok => {
+         data[5].focus();
+         return;
+      })
       return;
     }
 
     if(hora_entrada[0] > hora_salida[0]) {
-      alert('La hora de salida debe ser mayor a la hora de entrada.');
-      data[5].focus();    
+      swal('La hora de salida debe ser mayor a la hora de entrada.', {
+        icon:'warning'
+      })
+      .then(ok => {
+         data[5].focus();
+         return;
+      })
       return;
     }
 

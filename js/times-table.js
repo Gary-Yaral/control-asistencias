@@ -2,7 +2,8 @@ const tbody = document.querySelector('#t-body');
 const body = document.querySelector('body');
 const modal = document.querySelector('.modal-update');
 const form = document.querySelector('.form-insert');
-const select = form.querySelector('.type-select')
+const select = form.querySelector('#type-select');
+const selectAlmuerzo = document.querySelector('#almuerzo');
 const cedula = form.querySelector('#userID');
 const fullname = form.querySelector('#username');
 
@@ -15,32 +16,43 @@ cedula.readOnly = true;
 fullname.readOnly = true;
 
 inputs.push(select);
+inputs.push(selectAlmuerzo);
 
-function getHours(horaEntrada, horaSalida) {
-  let tiempoEntrada = horaEntrada.split(':').map(hour => parseInt(hour));
-  let tiempoSalida = horaSalida.split(':').map(hour => parseInt(hour));    
+function getHours(horaEntrada, horaSalida, almuerzo) {
+  let tiempoEntrada = horaEntrada.split(':').map(n => parseInt(n));
+  let tiempoSalida = horaSalida.split(':').map(n => parseInt(n));
   let horas = (tiempoSalida[0] + (tiempoSalida[1]/60)) - (tiempoEntrada[0] + (tiempoEntrada[1]/60));
-  if(tiempoSalida[0] >= 17 && tiempoSalida[1] >= 0) {
-    let horasNormales = (Math.trunc(100 * (17 - (tiempoEntrada[0] + (tiempoEntrada[1]/60))))) / 100;
-    
-    let extras = (Math.trunc((horas - horasNormales) * 100)) / 100
+  if(almuerzo === '1') {
+    let totalHoras =  horas - 1;
+    if( totalHoras > 8 ) {
+      let extras = (Math.trunc((totalHoras - 8) * 100))/100;
+      return {
+        normales: 8,
+        extras
+      }
+    }
     return {
-      normales:  Math.trunc(100 * (horasNormales - 1)) /100 ,
-      extras
-    };
-  }
-
-  if(horas > 4) {
-    return {
-      normales:  ((Math.trunc(100 * horas)) / 100)- 1,
+      normales: (Math.trunc(horas * 100))/100,
       extras: 0
-    };
+    }
   }
 
-  return {
-    normales:  (Math.trunc(100 * horas)) / 100,
-    extras: 0
-  };
+  if(almuerzo === '0') {
+    let totalHoras =  horas;
+    if( totalHoras > 8 ) {
+      let extras = (Math.trunc((totalHoras - 8) * 100))/100;
+      return {
+        normales: 8,
+        extras
+      }
+    }
+    
+    return {
+      normales: (Math.trunc(horas * 100))/100,
+      extras: 0
+    }
+  }
+  
 }
 
 fetch('controller/getAllTimes.php')
@@ -54,6 +66,7 @@ fetch('controller/getAllTimes.php')
       let fecha =document.createElement('td');
       let horaEntrada =document.createElement('td');
       let horaSalida =document.createElement('td');
+      let almuerzo =document.createElement('td');
       let horaNormales =document.createElement('td');
       let horasExtras =document.createElement('td');
   
@@ -76,18 +89,19 @@ fetch('controller/getAllTimes.php')
       fecha.innerHTML = time[4];
       horaEntrada.innerHTML = time[5];
       horaSalida.innerHTML = time[6];
-      horaNormales.innerHTML = getHours(time[5],time[6]).normales;
-      horasExtras.innerHTML = getHours(time[5],time[6]).extras;
-     
+      horaNormales.innerHTML = getHours(time[5],time[6],time[7]).normales;
+      horasExtras.innerHTML = getHours(time[5],time[6],time[7]).extras;
+      almuerzo.innerHTML = time[7] === '1' ? 'SI' : 'NO';
+
       tr.appendChild(codigo);
       tr.appendChild(cedula);
       tr.appendChild(nombre);
       tr.appendChild(fecha);
       tr.appendChild(horaEntrada);
       tr.appendChild(horaSalida);
+      tr.appendChild(almuerzo);
       tr.appendChild( horaNormales);
       tr.appendChild(horasExtras);
-
       tr.appendChild(buttons);
 
       tr.setAttribute('row',time[0]);
@@ -178,6 +192,7 @@ body.addEventListener('click', (e) => {
     inputs[2].value = tds[3].innerHTML
     inputs[3].value = tds[4].innerHTML
     inputs[4].value = tds[5].innerHTML
+    selectAlmuerzo.value = tds[6].innerHTML === 'SI' ? 1 : 0
 
     cedula.readOnly = true;
     fullname.readOnly = true;
@@ -227,18 +242,19 @@ select.addEventListener('change', () => {
 
 function verifyEmpties () {
   const empties = [];
-  const monthsages = [
+  const messages = [
     "No ha ingresado la cédula o tiene espacios al principio",
     "No ha ingresado los nombres o tiene espacios al principio",
     "No ha ingresado fecha",
     "No ha ingresado la hora de entrada",
     "No ha ingresado la hora de salida",
     "Selecciona el código",
+    "No has indicado si tuvo o no receso",
   ]
 
   inputs.forEach((input, index) => {
     if (input.value === "" || input.value[0] === " ") {
-      empties.push({index, input, monthsage: monthsages[index]});
+      empties.push({index, input, message: messages[index]});
     }
   })
 
@@ -250,8 +266,10 @@ function saveTimer() {
   let formData = new FormData(form);
   let codigo = modal.getAttribute('timerCode');
   let codigoActual = modal.getAttribute('workerCode');
+  let almuerzo = parseInt(selectAlmuerzo.value);
   formData.append('timerCode', codigo);
   formData.append('actualCode', codigoActual);
+  formData.append('almuerzo', almuerzo);
   fetch('controller/update_timer.php', {
     method: 'POST',
     body: formData
@@ -277,8 +295,9 @@ function saveTimer() {
           tds[3].innerHTML = formData.get('date');
           tds[4].innerHTML = formData.get('hora_ingreso');
           tds[5].innerHTML = formData.get('hora_salida');
-          tds[6].innerHTML = getHours(formData.get('hora_ingreso'),formData.get('hora_salida')).normales;
-          tds[7].innerHTML = getHours(formData.get('hora_ingreso'),formData.get('hora_salida')).extras;
+          tds[6].innerHTML = formData.get('almuerzo') === '1' ? 'SI' :'NO'
+          tds[7].innerHTML = getHours(formData.get('hora_ingreso'),formData.get('hora_salida'),formData.get('almuerzo')).normales;
+          tds[8].innerHTML = getHours(formData.get('hora_ingreso'),formData.get('hora_salida'),formData.get('almuerzo')).extras;
 
           hideModal();
           form.reset();

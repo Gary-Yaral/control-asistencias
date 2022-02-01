@@ -38,6 +38,7 @@
           <th>Fecha</th>
           <th>Hora entrada</th>
           <th>Hora salida</th>
+          <th>Almuerzo</th>
           <th>Horas normales</th>
           <th>Horas extras</th>
           <th>Opciones</th>
@@ -52,7 +53,7 @@
       <h3>Editar asistencia</h3>
       <div>
         <label for="userCode">Código</label>
-        <select name="type" id="type" class="type-select">
+        <select name="type" id="type-select" class="type-select">
           <option value="">Seleccione código</option>
         </select>
       </div>
@@ -76,7 +77,14 @@
         <label for="time_out">Hora salida</label>
         <input type="time" id="time_out" name="hora_salida">
       </div>
-      
+      <div>
+        <label for="almuerzo">¿Tuvo su hora de almuerzo?</label>
+        <select name="almuerzo" id="almuerzo" class="type-select">
+          <option value="">Seleccione respuesta</option>
+          <option value="1">SI</option>
+          <option value="0">NO</option>
+        </select>
+      </div>
       <div>
         <input type="submit" value="Registrar">
       </div>

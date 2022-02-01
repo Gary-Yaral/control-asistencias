@@ -19,6 +19,10 @@
   .table-container table{
     width: 100% !important;
   }
+
+  .hide-button {
+    display: none;
+  }
 }
 
 @media print and (color) {

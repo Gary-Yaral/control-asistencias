@@ -74,6 +74,8 @@ fetch('controller/getAllWorkers.php')
       btnDelete.classList.add('btn-delete')
       buttons.appendChild(btnEdit);
       buttons.appendChild(btnDelete);
+      btnEdit.classList.add('hide-button');
+      btnDelete.classList.add('hide-button');
 
       codigo.innerHTML = worker[0];
       cedula.innerHTML = worker[1];

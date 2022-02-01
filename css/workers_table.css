@@ -234,6 +234,10 @@ caption img {
   justify-self: center;
 }
 
+.margin-none {
+  margin: 0;
+}
+
 @media screen and (max-width: 804px) {
   .table-container{
     width: 95%;  
